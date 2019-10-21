@@ -101,21 +101,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Saves the instance state if the activity is restarted (for example,
-     * on device rotation.) Here you save the values for the count and the
-     * background color.
-     *
-     * @param outState The state data.
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(COUNT_KEY, mCount);
-        outState.putInt(COLOR_KEY, mColor);
-    }
-
-    /**
      * Handles the onClick for the Reset button. Resets the global count and
      * background variables to the defaults and resets the views to those
      * default values.
@@ -131,5 +116,15 @@ public class MainActivity extends AppCompatActivity {
         mColor = ContextCompat.getColor(this,
                 R.color.default_background);
         mShowCountTextView.setBackgroundColor(mColor);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor preferenceEditor = mPreferences.edit();
+        preferenceEditor.putInt(COUNT_KEY, mCount);
+        preferenceEditor.putInt(COLOR_KEY, mColor);
+        preferenceEditor.apply();
     }
 }
